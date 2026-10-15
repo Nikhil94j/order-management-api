@@ -1,9 +1,7 @@
 package com.nprojects.ordermanagementapplication.controller;
 
-import com.nprojects.ordermanagementapplication.model.LoginRequest;
-import com.nprojects.ordermanagementapplication.model.RegisterRequest;
-import com.nprojects.ordermanagementapplication.model.RegisterResponse;
-import com.nprojects.ordermanagementapplication.model.User;
+import com.nprojects.ordermanagementapplication.model.*;
+import com.nprojects.ordermanagementapplication.service.JwtService;
 import com.nprojects.ordermanagementapplication.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final UserService userService;
+    private final JwtService jwtService;
 
-    public AuthController(UserService userService){
+    public AuthController(UserService userService,JwtService jwtService){
         this.userService=userService;
+        this.jwtService=jwtService;
     }
 
 
@@ -35,10 +35,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<RegisterResponse> login(@RequestBody LoginRequest request){
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request){
+
         User user=userService.login(request);
 
-        RegisterResponse response= new RegisterResponse(user.getId(),user.getEmail());
+        String token= jwtService.generateToken(user.getId());
+
+        LoginResponse response= new LoginResponse(user.getId(),user.getEmail(),token);
 
         return ResponseEntity.ok(response);
 
