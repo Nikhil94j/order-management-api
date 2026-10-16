@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+@io.swagger.v3.oas.annotations.security.SecurityRequirement(
+        name = "bearerAuth"
+)
 @RestController
 public class OrderController {
 
