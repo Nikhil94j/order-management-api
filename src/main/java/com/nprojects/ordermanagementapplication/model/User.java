@@ -1,5 +1,6 @@
 package com.nprojects.ordermanagementapplication.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,6 +15,7 @@ public class User {
     @Column(nullable = false,unique = true)
     private String email;
 
+    @JsonIgnore
     private String password;
 
 protected User(){

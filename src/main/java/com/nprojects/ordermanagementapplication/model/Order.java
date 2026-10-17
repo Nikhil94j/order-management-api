@@ -1,9 +1,6 @@
 package com.nprojects.ordermanagementapplication.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name="orders")
@@ -14,6 +11,10 @@ public class Order {
     private Long id;
     private String product;
     private int quantity;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="user_id", nullable = false)
+    private User user;
 
 
     public Order(){
@@ -38,6 +39,10 @@ public class Order {
         return quantity;
     }
 
+    public User getUser() {
+        return user;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -48,5 +53,9 @@ public class Order {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public void setUser( User user){
+        this.user = user;
     }
 }
